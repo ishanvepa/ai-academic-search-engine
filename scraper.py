@@ -1,12 +1,21 @@
 import requests
 import time
 import pandas as pd
+from flask import Flask, jsonify, request
 
-def fetch_semantic_scholar(query, total_results=1000, batch_size=100):
+app = Flask(__name__)
+
+@app.route("/fetch_semantic_scholar", methods=["GET"])
+def fetch_semantic_scholar(total_results=1000, batch_size=100):
+    query = request.args.get('query')
+    if not query:
+        return jsonify({"error": "Missing 'query' parameter"}), 400
+    print(query)
     base_url = "https://api.semanticscholar.org/graph/v1/paper/search"
     fields = "title,abstract,authors,year,url"
     all_papers = []
 
+    time.sleep(1)  #prevent rate limiting
     for offset in range(0, total_results, batch_size):
         print(f"Fetching papers {offset} to {offset + batch_size}...")
         params = {
@@ -32,12 +41,9 @@ def fetch_semantic_scholar(query, total_results=1000, batch_size=100):
 
         time.sleep(1)  #prevent rate limiting
 
-    return pd.DataFrame(all_papers)
+    df = pd.DataFrame(all_papers)
+    print(f"Fetched {len(all_papers)} papers.")
+    return df.to_json(orient='records', index=False)
 
-# Example usage
-research_query = str(input("Enter your research query: "))
-num_results_query = int(input("Enter the number of results you want (default is 1000): "))
-
-df = fetch_semantic_scholar(research_query, total_results=num_results_query)
-df.to_csv("research_papers.csv", index=False)
-print(f"Saved {num_results_query} research papers to research_papers.csv")
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=5000, debug=True)
