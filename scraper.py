@@ -1,16 +1,8 @@
 import requests
 import time
 import pandas as pd
-from flask import Flask, jsonify, request
 
-app = Flask(__name__)
-
-@app.route("/fetch_semantic_scholar", methods=["GET"])
-def fetch_semantic_scholar(total_results=1000, batch_size=100):
-    query = request.args.get('query')
-    if not query:
-        return jsonify({"error": "Missing 'query' parameter"}), 400
-    print(query)
+def fetch_semantic_scholar(query, total_results=1000, batch_size=100):
     base_url = "https://api.semanticscholar.org/graph/v1/paper/search"
     fields = "title,abstract,authors,year,url"
     all_papers = []
@@ -44,6 +36,3 @@ def fetch_semantic_scholar(total_results=1000, batch_size=100):
     df = pd.DataFrame(all_papers)
     print(f"Fetched {len(all_papers)} papers.")
     return df.to_json(orient='records', index=False)
-
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True)
