@@ -31,7 +31,7 @@ def fetch_semantic_scholar(query, total_results=1000, batch_size=100):
                 "url": paper.get("url")  
             })
 
-        time.sleep(1)  #prevent rate limiting
+        time.sleep(1)  #prevent rate limiting between batches
 
     df = pd.DataFrame(all_papers)
     print(f"Fetched {len(all_papers)} papers.")
