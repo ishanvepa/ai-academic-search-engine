@@ -1,3 +1,4 @@
+from flask import jsonify
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 from langchain_community.document_loaders import JSONLoader
 from langchain_core.documents import Document
@@ -33,6 +34,18 @@ def ingest(papers):
     else: 
         vector_store.add_documents(new_docs)
 
-    print(vector_store)
     return {"success": f"{len(new_docs)} Research Papers successfully ingested"}, 200
 
+def similarity_search(query, k=5):
+    if vector_store is None:
+        return jsonify({"error": "Vector store not initialized"}), 500
+
+    # Perform similarity search
+    results = vector_store.similarity_search(query, k=k)
+    
+    # Store results into a dictionary
+    results_dict = {}
+    for i, res in enumerate(results):
+        results_dict[str(i)] = res.metadata
+
+    return results_dict, 200

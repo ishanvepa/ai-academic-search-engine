@@ -1,11 +1,11 @@
 import time
 from flask import Flask, jsonify, request
 from scraper import fetch_semantic_scholar
-from rag import ingest, vector_store, model
+from rag import ingest, similarity_search, vector_store
 
 app = Flask(__name__)
 
-@app.route("/fetch_semantic_scholar", methods=["GET"])
+@app.route("/fetch-semantic-scholar", methods=["GET"])
 def r_fetch_semantic_scholar(total_results=100, batch_size=20):
     query = request.args.get('query')
     if not query:
@@ -24,6 +24,16 @@ def r_ingest():
         return jsonify({"error": "Request JSON must be a list of papers"}), 400
     result = ingest(papers)
     return jsonify(result), 200
+
+@app.route("/similarity-search", methods=["GET"])
+def r_similarity_search():
+    query = request.args.get("query")
+    
+    k = request.args.get("k", 5)
+    result = similarity_search(query, k=k)
+
+    return jsonify(result), 200
+    
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
