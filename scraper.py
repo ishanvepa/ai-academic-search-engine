@@ -1,6 +1,7 @@
 import requests
 import time
 import pandas as pd
+import constants
 
 def fetch_semantic_scholar(query, total_results=1000, batch_size=100):
     base_url = "https://api.semanticscholar.org/graph/v1/paper/search"
@@ -16,7 +17,9 @@ def fetch_semantic_scholar(query, total_results=1000, batch_size=100):
             "limit": batch_size,
             "fields": fields
         }
-        response = requests.get(base_url, params=params)
+        headers = constants.keys_dict["x_api_key"]
+        print(f"Headers: {headers}")
+        response = requests.get(base_url, params=params, headers={"x_api_key": headers})
         if response.status_code != 200:
             print(f"Error at offset {offset}: {response.status_code}")
             break

@@ -8,6 +8,9 @@ app = Flask(__name__)
 @app.route("/fetch-semantic-scholar", methods=["GET"])
 def r_fetch_semantic_scholar(total_results=100, batch_size=20):
     query = request.args.get('query')
+    total_results = int(request.args.get('total_results', total_results))
+    batch_size = int(request.args.get('batch_size', batch_size))
+    
     if not query:
         return jsonify({"error": "Missing 'query' parameter"}), 400
     print(query)
