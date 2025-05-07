@@ -1,5 +1,9 @@
 research_papers.csv
-research_papers.json
 test_app.py
 __pycache__ 
 constants.py
+s2orc_fetch.py
+papers.json
+tempCodeRunnerFile.py
+research_papers.json
+faiss_index

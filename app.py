@@ -1,7 +1,7 @@
 import time
 from flask import Flask, jsonify, request
 from scraper import fetch_semantic_scholar
-from rag import ingest, similarity_search, vector_store
+from rag import ingest, similarity_search
 
 app = Flask(__name__)
 
@@ -10,12 +10,13 @@ def r_fetch_semantic_scholar(total_results=100, batch_size=20):
     query = request.args.get('query')
     total_results = int(request.args.get('total_results', total_results))
     batch_size = int(request.args.get('batch_size', batch_size))
-    
+
     if not query:
         return jsonify({"error": "Missing 'query' parameter"}), 400
     print(query)
     time.sleep(1)  # Prevent rate limiting
     papers_json = fetch_semantic_scholar(query, total_results, batch_size)
+    print(f"Fetched {len(papers_json)} papers.")
     return papers_json
 
 @app.route("/ingest", methods=["POST"])

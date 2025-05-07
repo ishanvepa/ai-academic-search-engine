@@ -1,3 +1,4 @@
+import os
 from flask import jsonify
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 from langchain_community.document_loaders import JSONLoader
@@ -7,8 +8,16 @@ from langchain_community.vectorstores import FAISS
 #load embeddings model
 model = SentenceTransformerEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2', model_kwargs={"trust_remote_code":True})
 
-#declare global vector store 
-vector_store = None
+# Define path to save FAISS index
+VECTORSTORE_DIR = "faiss_index"
+
+# Initialize or load vector store
+if os.path.exists(VECTORSTORE_DIR):
+    vector_store = FAISS.load_local(VECTORSTORE_DIR, model, allow_dangerous_deserialization=True)
+    print(f"Loaded FAISS index from '{VECTORSTORE_DIR}'")
+else:
+    vector_store = None
+    print("No existing FAISS index found.")
 
 #serialize fetched papers into vectorstore
 def ingest(papers):
@@ -33,6 +42,8 @@ def ingest(papers):
         vector_store = FAISS.from_documents(new_docs, model)  # Initialize the vector store
     else: 
         vector_store.add_documents(new_docs)
+
+    vector_store.save_local(VECTORSTORE_DIR)
 
     return {"success": f"{len(new_docs)} Research Papers successfully ingested"}, 200
 
