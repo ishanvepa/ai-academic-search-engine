@@ -5,7 +5,7 @@ import time
 import pandas as pd
 import constants
 
-def fetch_semantic_scholar(query, total_results=1000, batch_size=100, output_path='papers.json'):
+def fetch_semantic_scholar(query, total_results=1000, batch_size=100, output_path='backend/papers.json'):
     base_url = "https://api.semanticscholar.org/graph/v1/paper/search"
     fields = "title,abstract,authors,year,url"
     
@@ -41,7 +41,7 @@ def fetch_semantic_scholar(query, total_results=1000, batch_size=100, output_pat
         time.sleep(1)  #prevent rate limiting between batches
 
     df = pd.DataFrame(all_papers)
-    df.to_json(orient='records', index=False, path_or_buf='papers.json')
+    df.to_json(orient='records', index=False, path_or_buf=output_path)
     print(f"Fetched {len(all_papers)} papers.")
     return df.to_json(orient='records', index=False)
     # #load existing papers if file exists
