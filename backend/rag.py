@@ -9,7 +9,7 @@ from langchain_community.vectorstores import FAISS
 model = SentenceTransformerEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2', model_kwargs={"trust_remote_code":True})
 
 # Define path to save FAISS index
-VECTORSTORE_DIR = "faiss_index"
+VECTORSTORE_DIR = "backend/faiss_index"
 
 # Initialize or load vector store
 if os.path.exists(VECTORSTORE_DIR):
