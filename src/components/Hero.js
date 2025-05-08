@@ -1,5 +1,6 @@
 import SearchBar from "./SearchBar";
 import ExampleQuery from "./ExampleQuery";
+import sample_queries from "@/data/sample_queries.json";
 
 export default function Hero() {
   return (
@@ -19,7 +20,7 @@ export default function Hero() {
         </p>
 
         <SearchBar />
-        <ExampleQuery />
+        <ExampleQuery text={sample_queries[Math.floor(Math.random() * 100)]}/>
       </div>
     </main>
   );
