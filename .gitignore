@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+#backend
+backend/research_papers.csv
+backend/test_app.py
+backend/__pycache__ 
+backend/constants.py
+backend/s2orc_fetch.py
+backend/papers.json
+backend/tempCodeRunnerFile.py
+backend/research_papers.json
+backend/faiss_index
