@@ -1,4 +1,4 @@
-# AI-Academic-Research-Engine
+# ai-academic-search-engine
 AI research search engine. Uses RAG and LLM similarity search to aid academic research.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
