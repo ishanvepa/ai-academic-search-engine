@@ -9,7 +9,7 @@ export default function Hero() {
     
 
       {/* Foreground Content */}
-      <div className="relative z-10 bg-gray-300/20 backdrop-blur-2xl rounded-2xl p-10 max-w-3xl w-full text-center shadow-xl">
+      <div className="relative z-10 bg-gray-300/20 rounded-3xl p-10 max-w-3xl w-full text-center shadow-xl">
         <h1 className="text-white text-4xl  mb-4">
           AI Academic Search Engine
         </h1>
