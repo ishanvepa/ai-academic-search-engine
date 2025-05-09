@@ -53,9 +53,7 @@ export default function SearchBar() {
           onClick={handleSearch}
           disabled={loading || !query.trim()}
           className={`px-5 py-2 rounded-r-full text-white transition ${
-            loading
-              ? "bg-amber-900 cursor-not-allowed"
-              : "bg-amber-800 hover:bg-amber-900"
+            loading ? "bg-amber-900 cursor-not-allowed" : "bg-amber-800 hover:bg-amber-900"
           }`}
         >
           {loading ? "Searching…" : "Search"}
