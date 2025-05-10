@@ -1,5 +1,6 @@
 'use client'; // Make sure this is a client component
 import { useEffect, useState } from "react";
+import PaperCard from "@/components/PaperCard";
 
 export default function SearchPage() {
   const [result, setResult] = useState(null);
@@ -17,9 +18,14 @@ export default function SearchPage() {
     
 
   return (
-    <div>
-      <h1>Search Result</h1>
-      <pre>{JSON.stringify(result, null, 2)}</pre>
-    </div>
+    <main className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      <div className="relative z-10 bg-gray-300/20 rounded-3xl p-10 max-w-3xl w-full text-center shadow-xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {Object.values(result).map((item, index) => (
+        <PaperCard key={index} {...item} />
+      ))}
+        </div>
+      </div>
+    </main>
   );
 }

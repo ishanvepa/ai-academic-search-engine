@@ -18,24 +18,24 @@ export default function Hero() {
         
         
 
-        {/* Foreground Content */}
-        <div className="relative z-10 bg-gray-300/20 rounded-3xl p-10 max-w-3xl w-full text-center shadow-xl">
-            <h1 className="text-white text-4xl mb-4">
-            AI Academic Search Engine
-            </h1>
-            <p className="text-white mb-6 text-lg">
-            the <span className="italic text-orange-400 font-semibold">better</span> way to conduct academic research
-            </p>
+            {/* Foreground Content */}
+            <div className="relative z-10 bg-gray-300/20 rounded-3xl p-10 max-w-3xl w-full text-center shadow-xl">
+                <h1 className="text-white text-4xl mb-4">
+                AI Academic Search Engine
+                </h1>
+                <p className="text-white mb-6 text-lg">
+                the <span className="italic text-orange-400 font-semibold">better</span> way to conduct academic research
+                </p>
 
-            <SearchBar query={query} setQuery={setQuery} />
-            <ExampleQuery 
-                text={randomSampleQuery} 
-                onClick={() => {
-                    setQuery(randomSampleQuery);
-                    console.log("random sample query clicked");
-                }}
-            />
-        </div>
+                <SearchBar query={query} setQuery={setQuery} />
+                <ExampleQuery 
+                    text={randomSampleQuery} 
+                    onClick={() => {
+                        setQuery(randomSampleQuery);
+                        console.log("random sample query clicked");
+                    }}
+                />
+            </div>
         </main>
     );
 }
