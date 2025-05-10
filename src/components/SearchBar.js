@@ -2,19 +2,18 @@
 import { useState } from "react";
 import axios from "axios";
 
-export default function SearchBar() {
-    const [query, setQuery] = useState("");
+export default function SearchBar({ query, setQuery }) {
     const [results, setResults] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    const handleSearch = async () => {
+    const handleFetch = async () => {
         if (!query.trim()) return;
         setLoading(true);
         setError("");
         try {
         const { data } = await axios.get(
-            `http://localhost:5000/fetch`,
+            `http://localhost:5000/fetch-semantic-scholar`,
             { params: { query } }
         );
         console.log("Search results:", data);
@@ -29,12 +28,14 @@ export default function SearchBar() {
         } finally {
         setLoading(false);
         }
+
+        
     };
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
         e.preventDefault();  
-        handleSearch();
+        handleFetch();
         }
     };
 
@@ -47,10 +48,10 @@ export default function SearchBar() {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Enter your academic search query..."
-          className="flex-grow bg-white px-4 py-2 rounded-l-full focus:outline-none focus:text-gray-600 placeholder:text-gray-400 placeholder:text-sm text-sm"
+          className="flex-grow bg-white px-4 py-2 rounded-l-full focus:outline-none focus:text-gray-600 text-gray-600 placeholder:text-gray-400 placeholder:text-sm text-sm "
         />
         <button
-          onClick={handleSearch}
+          onClick={handleFetch}
           disabled={loading || !query.trim()}
           className={`px-5 py-2 rounded-r-full text-white transition ${
             loading ? "bg-amber-900 cursor-not-allowed" : "bg-amber-800 hover:bg-amber-900"
