@@ -89,4 +89,6 @@ export default function SearchBar({ query, setQuery }) {
       )}
     </div>
   );
+
+  
 }

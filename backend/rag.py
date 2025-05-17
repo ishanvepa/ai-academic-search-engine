@@ -52,11 +52,15 @@ def similarity_search(query, k=5):
         return jsonify({"error": "Vector store not initialized"}), 500
 
     # Perform similarity search
-    results = vector_store.similarity_search(query, k=k)
+    # results = vector_store.similarity_search(query, k=k)
+
+    # perform similarity search with score
+    results = vector_store.similarity_search_with_score(query, k=k)
     
     # Store results into a dictionary
     results_dict = {}
-    for i, res in enumerate(results):
+    for i, (res, score) in enumerate(results):
         results_dict[str(i)] = res.metadata
+        results_dict[str(i)]["score"] = float(score)
 
     return results_dict, 200
