@@ -20,7 +20,7 @@ def r_fetch_semantic_scholar(total_results=100, batch_size=20):
     time.sleep(1)  # Prevent rate limiting
     papers_json = fetch_semantic_scholar(query, total_results, batch_size)
     retry = 0
-    while (not papers_json or len(papers_json) <= 2) and retry < 4:
+    while (not papers_json or len(papers_json) <= 2) and retry < 10:
         print("No papers found, retrying...")
         time.sleep(1)
         papers_json = fetch_semantic_scholar(query, total_results, batch_size)
