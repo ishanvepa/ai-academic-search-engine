@@ -1,9 +1,9 @@
 "use client";
 import SearchBar from "./SearchBar";
 import ExampleQuery from "./ExampleQuery";
+import PdfUploader from "./PdfUploader";
 import sample_queries from "@/data/sample_queries.json";
 import { useState, useEffect } from "react";
-
 export default function Hero() {
     const [query, setQuery] = useState("");
     const [randomSampleQuery, setRandomSampleQuery] = useState("");
@@ -35,6 +35,7 @@ export default function Hero() {
                         console.log("random sample query clicked");
                     }}
                 />
+                <PdfUploader />
             </div>
         </main>
     );

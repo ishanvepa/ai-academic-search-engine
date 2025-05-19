@@ -5,7 +5,6 @@ from langchain_community.document_loaders import JSONLoader
 from langchain_core.documents import Document
 from langchain_community.vectorstores import FAISS
 
-
 #load embeddings model
 model = SentenceTransformerEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2', model_kwargs={"trust_remote_code":True})
 
@@ -47,17 +46,13 @@ def ingest(papers):
 
     return {"success": f"{len(new_docs)} Research Papers successfully ingested"}, 200
 
+
 def similarity_search(query, k=5):
     if vector_store is None:
         return jsonify({"error": "Vector store not initialized"}), 500
 
-    # Perform similarity search
-    # results = vector_store.similarity_search(query, k=k)
-
-    # perform similarity search with score
     results = vector_store.similarity_search_with_score(query, k=k)
-    
-    # Store results into a dictionary
+
     results_dict = {}
     for i, (res, score) in enumerate(results):
         results_dict[str(i)] = res.metadata

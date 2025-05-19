@@ -82,11 +82,11 @@ export default function SearchBar({ query, setQuery }) {
 
       {error && <div className="text-red-600 text-sm">{error}</div>}
 
-      {fetchResults && (
+      {/* {fetchResults && (
         <pre className="w-full max-w-lg bg-gray-100 text-black p-4 rounded-lg text-xs overflow-auto">
           {JSON.stringify(fetchResults, null, 2)}
         </pre>
-      )}
+      )} */}
     </div>
   );
 

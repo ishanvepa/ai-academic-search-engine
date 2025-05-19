@@ -19,11 +19,11 @@ export default function SearchPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      <div className="relative z-10 bg-gray-300/20 rounded-3xl p-10 max-w-3xl w-full text-center shadow-xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="relative z-10 bg-gray-300/20 rounded-3xl p-10 max-w-5xl w-full text-center shadow-xl">
+        <div className="grid grid-cols-1 gap-4 max-h-[90vh] overflow-y-auto overflow-x-hidden">
           {Object.values(result).map((item, index) => (
-        <PaperCard key={index} {...item} />
-      ))}
+            <PaperCard key={index} {...item} />
+          ))}
         </div>
       </div>
     </main>
