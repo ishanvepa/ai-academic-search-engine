@@ -29,6 +29,7 @@ def ingest(papers):
             page_content=f"Title: {paper['title']}\nAbstract: {paper['abstract']}",
             metadata={
                 "title": paper["title"],
+                "abstract": paper["abstract"],
                 "authors": paper["authors"],
                 "year": paper["year"],
                 "url": paper["url"]

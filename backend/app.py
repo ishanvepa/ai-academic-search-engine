@@ -112,7 +112,7 @@ def summarize_text(text, num_words=20):
     tokenizer = BartTokenizer.from_pretrained(model_name)
     
     inputs = tokenizer(text, return_tensors="pt", max_length=1024, truncation=True)
-    summary_ids = model.generate(inputs["input_ids"],  min_length=5, length_penalty=2.0, num_beams=4, early_stopping=True)
+    summary_ids = model.generate(inputs["input_ids"],  min_length=5, max_length=num_words, length_penalty=2.0, num_beams=4, early_stopping=True)
 
     summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
     if not summary:
@@ -129,7 +129,7 @@ def summarize_abstract():
         return jsonify({"error": "Missing 'abstract' field"}), 400
 
     abstract = data["abstract"]
-    summary = summarize_text(abstract)
+    summary = summarize_text(abstract, num_words=60)
     
     if not summary:
         return jsonify({"error": "Failed to summarize abstract"}), 500

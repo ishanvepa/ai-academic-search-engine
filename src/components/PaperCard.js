@@ -24,7 +24,11 @@ export default function PaperCard({title, authors, year, url, abstract, score}) 
 
   const handleSummarize = async () => {
     // Use the abstract prop from PaperCard, not a hardcoded string
-    const abstract = "This is a sample abstract for the paper. It discusses the main findings and contributions of the research.";
+    if (!abstract) {
+      console.error("No abstract provided for summarization");
+      return;
+    }
+    // const abstract = "This is a sample abstract for the paper. It discusses the main findings and contributions of the research.";
     const { data } = await axios.post(
       'http://localhost:5000/summarize-abstract',
       { abstract }, // send as JSON
