@@ -59,3 +59,5 @@ def similarity_search(query, k=5):
         results_dict[str(i)]["score"] = float(1 - score)
 
     return results_dict, 200
+
+    

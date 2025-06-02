@@ -31,7 +31,7 @@ export default function Hero() {
                             className="animate-pulse opacity-75 rounded-3xl bg-gray-300/40 h-6 w-xs ml-auto mr-auto mt-4"
                             style={{
                             animationDelay: `${0.05}s`,
-                            animationDuration: "1s",
+                            animationDuration: "0.5s",
                             }}
                         />
                     )

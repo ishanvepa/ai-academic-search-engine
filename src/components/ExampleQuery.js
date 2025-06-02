@@ -2,7 +2,7 @@
 export default function ExampleQuery({text, onClick}) {
   return (
     <div
-      className="mt-4 hover:scale-105 transition inline-block bg-white/30 text-white px-4 py-1 rounded-full"
+      className="mt-4 hover:scale-105 transition-all inline-block bg-white/30 text-white px-4 py-1 rounded-full"
       onClick={onClick}
       style={{ cursor: "pointer" }}
     >

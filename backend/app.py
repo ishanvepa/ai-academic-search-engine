@@ -4,6 +4,8 @@ from flask_cors import CORS
 from scraper import fetch_semantic_scholar
 from rag import ingest, similarity_search 
 from pypdf import PdfReader
+from transformers import BartForConditionalGeneration, BartTokenizer
+
 
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000"])
@@ -20,11 +22,11 @@ def r_fetch_semantic_scholar(total_results=100, batch_size=20):
     time.sleep(1)  # Prevent rate limiting
     papers_json = fetch_semantic_scholar(query, total_results, batch_size)
     retry = 0
-    while (not papers_json or len(papers_json) <= 2) and retry < 10:
+    while (not papers_json and len(papers_json[0]) <= 50) and retry < 10:
         print("No papers found, retrying...")
         time.sleep(1)
         papers_json = fetch_semantic_scholar(query, total_results, batch_size)
-        if papers_json and len(papers_json) > 2:
+        if papers_json and len(papers_json[0]) > 50:
             break
         retry += 1
 
@@ -101,15 +103,38 @@ def process_pdf(pdf_file_query):
     # return {"message": "PDF uploaded", "Header": f"{text_summary[:30]}..."}
     
 
-def summarize_text(text):
+def summarize_text(text, num_words=20):
     if text is None:
         return {"error": "No PDF text available"}
     
-    # Here you would implement the summarization logic
-    # For now, we'll just return the first 100 characters
-    summary = text[:100]
+    model_name = "facebook/bart-large-cnn"
+    model = BartForConditionalGeneration.from_pretrained(model_name)
+    tokenizer = BartTokenizer.from_pretrained(model_name)
+    
+    inputs = tokenizer(text, return_tensors="pt", max_length=1024, truncation=True)
+    summary_ids = model.generate(inputs["input_ids"],  min_length=5, length_penalty=2.0, num_beams=4, early_stopping=True)
+
+    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    if not summary:
+        return {"error": "Failed to summarize text"}
     return summary
 
+@app.route("/summarize-abstract", methods=["POST"])
+def summarize_abstract():
+    print("Summarizing abstract...")
+    if not request.is_json:
+        return jsonify({"error": "Invalid content type; expected JSON"}), 400
+    data = request.get_json()
+    if "abstract" not in data:
+        return jsonify({"error": "Missing 'abstract' field"}), 400
+
+    abstract = data["abstract"]
+    summary = summarize_text(abstract)
+    
+    if not summary:
+        return jsonify({"error": "Failed to summarize abstract"}), 500
+    
+    return jsonify({"summary": summary}), 200
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)

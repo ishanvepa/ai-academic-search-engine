@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios';
 
 function getScoreColor(score) {
   // score: 0-1, map to 0-100
@@ -14,10 +15,24 @@ function getScoreGradient(percent) {
   return `linear-gradient(135deg, #ef4444 0%, #22c55e 100%)`;
 }
 
+
 export default function PaperCard({title, authors, year, url, abstract, score}) {
   const percentScore = (score * 100).toFixed(1);
   const percent = Math.max(0, Math.min(score * 100, 100));
   const scoreColor = getScoreColor(score);
+  const [summary, setSummary] = React.useState("");
+
+  const handleSummarize = async () => {
+    // Use the abstract prop from PaperCard, not a hardcoded string
+    const abstract = "This is a sample abstract for the paper. It discusses the main findings and contributions of the research.";
+    const { data } = await axios.post(
+      'http://localhost:5000/summarize-abstract',
+      { abstract }, // send as JSON
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+    setSummary(data.summary);
+    return data.summary;
+  }
 
   return (
     <div className="bg-white/10 rounded-xl p-6 shadow-lg backdrop-blur-md hover:scale-[1.01] transition">
@@ -66,6 +81,18 @@ export default function PaperCard({title, authors, year, url, abstract, score}) 
           >
             View on Semantic Scholar →
           </a>
+          <button 
+            className="bg-amber-900 m-4 p-2 rounded-4xl transition hover:bg-amber-900/75 text-gray-300"
+            onClick={handleSummarize}
+          >
+            Summarize
+          </button>
+        {summary && 
+          <div className="mt-4 text-sm text-gray-300">
+            <h4 className="font-semibold mb-2">summary:</h4>
+            <p className="text-gray-200">{summary}</p>
+          </div>
+        }
         </div>
       </div>
     </div>
