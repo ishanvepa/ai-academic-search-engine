@@ -59,27 +59,95 @@ export default function PdfUploader() {
         }
     };
 
+    const [open, setOpen] = useState(false);
+
     return (
-        <div className="min-h-[200px] flex flex-col items-center justify-center bg-white/15 shadow-xl backdrop-blur-md rounded-2xl border border-white/20 p-8 mx-auto my-8 max-w-md">
-            <input
-                type="file"
-                accept="application/pdf"
-                onChange={handleFileChange}
-                className="mb-4 text-white bg-white/30 border-none rounded-lg p-2 file:bg-white/40 file:rounded-lg file:p-2 file:border-none"
-            />
+        <div className="flex flex-col items-center justify-center mt-5">
             <button
-                onClick={handleUpload}
-                disabled={loading || !selectedFile}
-                className={`px-6 py-2 rounded-lg border-none bg-white/25 text-white shadow-md cursor-pointer transition hover:bg-white/40 
-                    ${loading ? "bg-amber-900 cursor-not-allowed" : "bg-amber-800 hover:bg-amber-900"}`}
+                onClick={() => setOpen(true)}
+                className="px-6 py-3 rounded-xl border-none text-white font-semibold shadow-lg bg-amber-800/80 hover:bg-amber-800 hover:scale-105 transition cursor-pointer flex items-center gap-2"
             >
-                {loading ? "Uploading..." : "Upload and Search"}
+                {/* Upload file icon */}
+                <svg
+                    className="w-5 h-5 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12"
+                    />
+                </svg>
+                Upload File
             </button>
-
-
-            {error && <div className="text-red-600 text-sm">{error}</div>}
+            {open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                    <div className="bg-gradient-to-br from-white/20 to-amber-100/10 shadow-2xl backdrop-blur-lg rounded-3xl border border-white/30 p-10 mx-auto max-w-lg relative">
+                        <button
+                            onClick={() => setOpen(false)}
+                            className="absolute top-4 right-4 text-amber-800/70 hover:text-amber-900 text-2xl font-bold"
+                            aria-label="Close"
+                        >
+                            &times;
+                        </button>
+                        <label
+                            htmlFor="pdf-upload"
+                            className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-amber-800 rounded-xl cursor-pointer bg-white/30 hover:bg-amber-200/30 transition mb-6"
+                        >
+                            <svg
+                                className="w-10 h-10 mb-2 text-amber-800/70"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 16v-8m0 0L8 8m4 0l4 0M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"
+                                />
+                            </svg>
+                            <span className="text-white-800 font-medium">
+                                {selectedFile ? selectedFile.name : "Click to select a PDF file"}
+                            </span>
+                            <input
+                                id="pdf-upload"
+                                type="file"
+                                accept="application/pdf"
+                                onChange={handleFileChange}
+                                className="hidden"
+                            />
+                        </label>
+                        <button
+                            onClick={async () => {
+                                await handleUpload();
+                                setOpen(false);
+                            }}
+                            disabled={loading || !selectedFile}
+                            className={`w-full px-6 py-3 rounded-xl border-none text-white font-semibold shadow-lg transition 
+                                ${loading || !selectedFile
+                                    ? "bg-amber-700/30 cursor-not-allowed"
+                                    : "bg-amber-800/80 hover:bg-amber-800 hover:scale-105"}`}
+                        >
+                            {loading ? (
+                                <span className="flex items-center justify-center">
+                                    <svg className="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                                    </svg>
+                                    Searching...
+                                </span>
+                            ) : (
+                                "Upload and Search"
+                            )}
+                        </button>
+                        {error && <div className="text-red-600 text-sm mt-4">{error}</div>}
+                    </div>
+                </div>
+            )}
         </div>
-        
-
     );
 }

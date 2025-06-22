@@ -73,10 +73,25 @@ export default function SearchBar({ query, setQuery }) {
           onClick={handleSearch}
           disabled={loading || !query.trim()}
           className={`px-5 py-2 rounded-r-full text-white transition ${
-            loading ? "bg-amber-900 cursor-not-allowed" : "bg-amber-800 hover:bg-amber-900"
-          }`}
+            loading ? "bg-amber-900 cursor-not-allowed" : "bg-amber-800 hover:bg-amber-900 cursor-pointer"
+          } flex items-center justify-center`}
         >
-          {loading ? "Searching…" : "Search"}
+          {loading ? (
+            "Searching…"
+          ) : (
+            // Search icon (SVG)
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <circle cx="11" cy="11" r="7" />
+              <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" strokeWidth={2} />
+            </svg>
+          )}
         </button>
       </div>
 
