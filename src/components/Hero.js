@@ -17,11 +17,11 @@ export default function Hero() {
         <main className="min-h-[94vh] flex items-center justify-center relative overflow-hidden">
             {/* Foreground Content */}
             <div className="relative z-10 bg-gray-300/20 rounded-3xl p-10 max-w-3xl w-full text-center shadow-xl">
-                <h1 className="text-white text-4xl mb-4">
-                AI Academic Search Engine
-                </h1>
+                
+                <h1 className="text-white text-4xl font-bold mb-4">
+                Research <span className="pr-[0.15rem] bg-gradient-to-r from-orange-400 via-yellow-500 to-amber-200 text-transparent bg-clip-text font-semibold">better</span>                 </h1>
                 <p className="text-white mb-6 text-lg">
-                the <span className="pr-[0.15rem] italic bg-gradient-to-r from-orange-400 via-yellow-500 to-amber-200 text-transparent bg-clip-text font-semibold">better</span> way to conduct academic research
+                    Streamline your academic research with AI-powered paper discovery and intelligent summaries
                 </p>
 
                 <SearchBar query={query} setQuery={setQuery} />

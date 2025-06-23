@@ -7,6 +7,7 @@ export default function SearchPage() {
   const [result, setResult] = useState(null);
   // const router = useRouter();
 
+  
   useEffect(() => {
     const stored = sessionStorage.getItem("similaritySearchResults");
     if (stored) {
@@ -39,7 +40,7 @@ export default function SearchPage() {
   return (
     <main className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <div className="relative z-10 bg-gray-300/20 rounded-3xl p-10 max-w-5xl w-full text-center shadow-xl">
-        <div className="grid grid-cols-1 gap-4 max-h-[90vh] overflow-y-auto overflow-x-hidden">
+        <div className="grid grid-cols-1 gap-4 max-h-[90vh] overflow-y-auto overflow-x-hidden pr-4">
           {console.log("Rendering search results:", result)}
           {Object.values(result).map((item, index) => (
             <PaperCard key={index} {...item} />

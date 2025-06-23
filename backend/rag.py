@@ -9,15 +9,17 @@ from langchain_community.vectorstores import FAISS
 model = SentenceTransformerEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2', model_kwargs={"trust_remote_code":True})
 
 # Define path to save FAISS index
-VECTORSTORE_DIR = "backend/faiss_index"
+# VECTORSTORE_DIR = "backend/faiss_index"
 
-# Initialize or load vector store
-if os.path.exists(VECTORSTORE_DIR):
-    vector_store = FAISS.load_local(VECTORSTORE_DIR, model, allow_dangerous_deserialization=True)
-    print(f"Loaded FAISS index from '{VECTORSTORE_DIR}'")
-else:
-    vector_store = None
-    print("No existing FAISS index found.")
+# # Initialize or load vector store
+# if os.path.exists(VECTORSTORE_DIR):
+#     vector_store = FAISS.load_local(VECTORSTORE_DIR, model, allow_dangerous_deserialization=True)
+#     print(f"Loaded FAISS index from '{VECTORSTORE_DIR}'")
+# else:
+#     vector_store = None
+#     print("No existing FAISS index found.")
+
+vector_store = None  # Initialize vector store as None
 
 #serialize fetched papers into vectorstore
 def ingest(papers):
@@ -43,7 +45,7 @@ def ingest(papers):
         vector_store = FAISS.from_documents(new_docs, model, normalize_L2=True)  # Initialize the vector store
     else: 
         vector_store.add_documents(new_docs)
-    vector_store.save_local(VECTORSTORE_DIR)
+    # vector_store.save_local(VECTORSTORE_DIR)
     
 
     return {"success": f"{len(new_docs)} Research Papers successfully ingested"}, 200

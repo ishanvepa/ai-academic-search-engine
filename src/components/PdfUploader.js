@@ -24,6 +24,8 @@ export default function PdfUploader() {
         formData.append('pdfFile', selectedFile);
 
         try {
+            sessionStorage.setItem("similaritySearchResults", false); 
+            router.push("/search");
             const { data: fileUploaded } = await axios.post('http://localhost:5000/upload-pdf', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -31,12 +33,22 @@ export default function PdfUploader() {
             });
             console.log("Upload results:", fileUploaded);
             const query = fileUploaded.summary;
-            const { data: fetchData } = await axios.get(
+            const { data: semanticScholarfetchData } = await axios.get(
                 `http://localhost:5000/fetch-semantic-scholar`,
                 { params: { query } }
             );
-            console.log("Fetched results:", fetchData);
+            const { data: arxivFetchData } = await axios.get(
+                `http://localhost:5000/fetch-arxiv`,
+                { params: { query } }
+            );
 
+            // Combine the results into one array (or object, depending on your data structure)
+            const fetchData = [
+                ...(Array.isArray(semanticScholarfetchData) ? semanticScholarfetchData : [semanticScholarfetchData]),
+                ...(Array.isArray(arxivFetchData) ? arxivFetchData : [arxivFetchData])
+            ];
+
+            console.log("Combined fetched results:", fetchData);
             const { data: ingestionData } = await axios.post(
                 `http://localhost:5000/ingest`,
                 fetchData
@@ -50,8 +62,7 @@ export default function PdfUploader() {
             console.log("Similarity search results:", simData);
 
             sessionStorage.setItem("similaritySearchResults", JSON.stringify(simData[0]));
-            router.push("/search");
-
+            window.location.reload();
         } catch (error) {
             console.error('Error:', error);
         } finally{

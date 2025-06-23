@@ -20,12 +20,25 @@ export default function SearchBar({ query, setQuery }) {
     try {
       sessionStorage.setItem("similaritySearchResults", false); 
       router.push("/search");
-      const { data: fetchData } = await axios.get(
+      const { data: semanticScholarfetchData } = await axios.get(
         `http://localhost:5000/fetch-semantic-scholar`,
         { params: { query } }
       );
-      console.log("Fetched results:", fetchData);
+      const { data: arxivFetchData } = await axios.get(
+        `http://localhost:5000/fetch-arxiv`,
+        { params: { query } }
+      );
+
+      // Combine the results into one array (or object, depending on your data structure)
+      const fetchData = [
+        ...(Array.isArray(semanticScholarfetchData) ? semanticScholarfetchData : [semanticScholarfetchData]),
+        ...(Array.isArray(arxivFetchData) ? arxivFetchData : [arxivFetchData])
+      ];
+
+      console.log("Combined fetched results:", fetchData);
       setFetchResults(fetchData);
+      // console.log("Fetched results:", arxivFetchData);
+      // setFetchResults(arxivFetchData);
 
       const { data: ingestionData } = await axios.post(
         `http://localhost:5000/ingest`,

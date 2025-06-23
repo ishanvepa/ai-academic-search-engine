@@ -24,3 +24,18 @@ body {
   color: var(--foreground);
   font-family: Inter, Arial, Helvetica, sans-serif;
 }
+
+::-webkit-scrollbar {
+  margin-left: 8px;
+  width: 8px;
+  background: rgba(229, 231, 235, 0.5); /* Tailwind gray-200 with 0.5 alpha */
+  border-radius: 4px;
+  visibility: hidden;
+}
+::-webkit-scrollbar-thumb {
+  margin-left: 8px;
+  background: rgba(209, 160, 96, 0.5); /* Accent color with 0.5 alpha */
+  border-radius: 4px;
+  /* visibility: hidden; */
+}
+
