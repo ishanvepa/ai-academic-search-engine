@@ -88,7 +88,7 @@ export default function PdfUploader() {
                     <div className="bg-gradient-to-br from-white/20 to-amber-100/10 shadow-2xl backdrop-blur-lg rounded-3xl border border-white/30 p-10 mx-auto max-w-lg relative">
                         <button
                             onClick={() => setOpen(false)}
-                            className="absolute top-4 right-4 text-amber-800/70 hover:text-amber-900 text-2xl font-bold"
+                            className="absolute top-4 right-4 text-amber-700/80 hover:text-amber-800 text-2xl font-bold cursor-pointer transition hover:scale-110"
                             aria-label="Close"
                         >
                             &times;
@@ -110,7 +110,7 @@ export default function PdfUploader() {
                                     d="M12 16v-8m0 0L8 8m4 0l4 0M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"
                                 />
                             </svg>
-                            <span className="text-white-800 font-medium">
+                            <span className="text-white-800 font-medium pl-5 pr-5 text-center">
                                 {selectedFile ? selectedFile.name : "Click to select a PDF file"}
                             </span>
                             <input

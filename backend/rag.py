@@ -44,6 +44,7 @@ def ingest(papers):
     else: 
         vector_store.add_documents(new_docs)
     vector_store.save_local(VECTORSTORE_DIR)
+    
 
     return {"success": f"{len(new_docs)} Research Papers successfully ingested"}, 200
 

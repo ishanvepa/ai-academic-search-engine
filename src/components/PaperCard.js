@@ -85,12 +85,14 @@ export default function PaperCard({title, authors, year, url, abstract, score}) 
           >
             View on Semantic Scholar →
           </a>
-          <button 
-            className="bg-amber-900 m-4 p-2 rounded-4xl transition hover:bg-amber-900/75 text-gray-300"
-            onClick={handleSummarize}
-          >
-            Summarize
-          </button>
+          { abstract &&
+            <button 
+              className="bg-amber-900 m-4 p-2 rounded-4xl transition hover:bg-amber-900/75 text-gray-300"
+              onClick={handleSummarize}
+            >
+              Summarize
+            </button>
+          }
         {summary && 
           <div className="mt-4 text-sm text-gray-300">
             <h4 className="font-semibold mb-2">summary:</h4>

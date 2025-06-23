@@ -1,9 +1,11 @@
 'use client'; // Make sure this is a client component
 import { useEffect, useState } from "react";
 import PaperCard from "@/components/PaperCard";
+import { useRouter } from "next/navigation";
 
 export default function SearchPage() {
   const [result, setResult] = useState(null);
+  // const router = useRouter();
 
   useEffect(() => {
     const stored = sessionStorage.getItem("similaritySearchResults");

@@ -4,6 +4,7 @@ import requests
 import time
 import pandas as pd
 import constants
+import feedparser
 
 def fetch_semantic_scholar(query, total_results=1000, batch_size=100, output_path='backend/papers.json'):
     base_url = "https://api.semanticscholar.org/graph/v1/paper/search"
@@ -60,3 +61,48 @@ def fetch_semantic_scholar(query, total_results=1000, batch_size=100, output_pat
     # combined_df.to_json(orient='records', index=False, path_or_buf='papers.json')
 
     # return combined_df.to_json(orient='records', index=False)
+
+
+def fetch_arxiv(query, total_results=1000, batch_size=100, output_path='backend/arxiv_papers.json'):
+
+    base_url = "http://export.arxiv.org/api/query"
+    all_papers = []
+
+    for start in range(0, total_results, batch_size):
+        print(f"Fetching arXiv papers {start} to {start + batch_size}...")
+        params = {
+            "search_query": query,
+            "start": start,
+            "max_results": batch_size,
+            "sortBy": "submittedDate",
+            "sortOrder": "descending"
+        }
+        # Construct the query string
+        query_str = "&".join([f"{k}={v}" for k, v in params.items()])
+        url = f"{base_url}?{query_str}"
+
+        response = requests.get(url)
+        if response.status_code != 200:
+            print(f"Error at start {start}: {response.status_code}")
+            break
+
+        feed = feedparser.parse(response.text)
+        if not feed.entries:
+            break
+
+        for entry in feed.entries:
+            authors = ", ".join([author.name for author in entry.authors])
+            all_papers.append({
+                "title": entry.title,
+                "abstract": entry.summary,
+                "authors": authors,
+                "year": entry.published[:4],
+                "url": entry.link
+            })
+
+        time.sleep(1)  # prevent rate limiting
+
+    df = pd.DataFrame(all_papers)
+    df.to_json(orient='records', index=False, path_or_buf=output_path)
+    print(f"Fetched {len(all_papers)} arXiv papers.")
+    return json.loads(df.to_json(orient='records', index=False))

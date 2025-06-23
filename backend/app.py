@@ -1,7 +1,7 @@
 import time
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from scraper import fetch_semantic_scholar
+from scraper import fetch_semantic_scholar, fetch_arxiv
 from rag import ingest, similarity_search 
 from pypdf import PdfReader
 from transformers import BartForConditionalGeneration, BartTokenizer
@@ -33,6 +33,31 @@ def r_fetch_semantic_scholar(total_results=100, batch_size=20):
     if(retry == 4):
         return jsonify({"error": "No papers found after multiple attempts"}), 500
     return papers_json
+
+@app.route("/fetch-arxiv", methods=["GET"])
+def r_fetch_arxiv():
+    query = request.args.get('query')
+    total_results = int(request.args.get('total_results', 100))
+    batch_size = int(request.args.get('batch_size', 20))
+
+    if not query:
+        return jsonify({"error": "Missing 'query' parameter"}), 400
+
+    print(query)
+    time.sleep(1)  # Prevent rate limiting
+    papers_json = fetch_arxiv(query, total_results, batch_size)
+    retry = 0
+    while (not papers_json or len(papers_json) == 0) and retry < 10:
+        print("No papers found, retrying...")
+        time.sleep(1)
+        papers_json = fetch_arxiv(query, total_results, batch_size)
+        if papers_json and len(papers_json) > 0:
+            break
+        retry += 1
+
+    if retry == 10:
+        return jsonify({"error": "No papers found after multiple attempts"}), 500
+    return jsonify(papers_json)
 
 @app.route("/ingest", methods=["POST"])
 def r_ingest():

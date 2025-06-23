@@ -18,6 +18,8 @@ export default function SearchBar({ query, setQuery }) {
     setFetchResults(null);
 
     try {
+      sessionStorage.setItem("similaritySearchResults", false); 
+      router.push("/search");
       const { data: fetchData } = await axios.get(
         `http://localhost:5000/fetch-semantic-scholar`,
         { params: { query } }
@@ -38,7 +40,8 @@ export default function SearchBar({ query, setQuery }) {
       console.log("Similarity search results:", simData);
 
       sessionStorage.setItem("similaritySearchResults", JSON.stringify(simData[0]));
-      router.push("/search");
+      // router.refresh();
+      window.location.reload();
     } catch (err) {
       console.error("Axios error:", err);
       setError(
@@ -73,7 +76,7 @@ export default function SearchBar({ query, setQuery }) {
           onClick={handleSearch}
           disabled={loading || !query.trim()}
           className={`px-5 py-2 rounded-r-full text-white transition ${
-            loading ? "bg-amber-900 cursor-not-allowed" : "bg-amber-800 hover:bg-amber-900 cursor-pointer"
+            loading ? "bg-amber-900 cursor-not-allowed" : "bg-amber-800/50 hover:bg-amber-800/80 cursor-pointer"
           } flex items-center justify-center`}
         >
           {loading ? (
